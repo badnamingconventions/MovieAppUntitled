@@ -18,3 +18,9 @@ app.use('/title', TitleBasicRouter);
 app.listen(PORT, function() {
     console.log("Server is running on Port: " + PORT);
 });
+
+/* example of title searches
+titlebasics.find( { title_type:"tvEpisode"} )
+titlebasics.find( { title_type:"movie", $text: { $search: "\"after earth\"" } } )
+titlebasics.find( { title_type:{$exists: true}, $text: { $search: "\"after earth\"" } } )
+*/
