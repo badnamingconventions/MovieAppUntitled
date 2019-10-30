@@ -15,7 +15,7 @@ end
 class TitleBasic < Model
   @table_name = "titlebasics"
   @file_name = "title.basics"
-  @custom_indexes = [{title_type: 1, primary_title: "text"}]
+  @custom_indexes = [{primary_title: "text", title_type: 1}]
 
   def self.to_hash(_id, title_type, primary_title, original_title, is_adult, start_year, end_year, runtime_minutes, genres)
     {
@@ -87,6 +87,7 @@ class NameBasic < Model
   @custom_indexes = [{primary_name: "text"}]
 
   def self.to_hash(_id, primary_name, birthYear, deathYear, primaryProfession, knownForTitles)
+    return if birthYear == "\\N" || knownForTitles == "\\N"
     {
         _id: _id,
         primary_name: primary_name,

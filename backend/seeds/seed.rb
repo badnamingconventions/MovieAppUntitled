@@ -41,8 +41,9 @@ def seed_single_id_records(table, model)
       end
 
       line = line.chomp.split("\t")
+      hash =  model.to_hash(*line)
 
-      batch << model.to_hash(*line)
+      batch << hash if hash
 
       if batch.size == MAX_BATCH
         table.insert_many(batch)
@@ -71,7 +72,6 @@ MODELS.each do |model|
   p model.names
 
   #   download file
-  # return p "Skipping pre-seeded section" unless File.exists?(expanded_path(file_name))
   download_file(file_name) unless File.exists?(expanded_path(file_name))
 
   #   drop the table to run again - very inefficient
