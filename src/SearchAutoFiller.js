@@ -1,50 +1,29 @@
 import React, { useState } from "react";
-import "./SearchAutoFiller.css";
 import { Icon, Button, Input, AutoComplete } from "antd";
 import axios from "axios";
 import _ from "lodash";
 
 const { Option } = AutoComplete;
 
-function onSelect(value) {
-  console.log("onSelect", value);
-}
-function searchResult(query) {}
-
-function renderOption(item) {
-  return (
-    <Option key={item.category} text={item.category}>
-      <div className="global-search-item">
-        <span className="global-search-item-desc">
-          Found {item.query} on
-          <a
-            href={`https://s.taobao.com/search?q=${item.query}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {item.category}
-          </a>
-        </span>
-        <span className="global-search-item-count">{item.count} results</span>
-      </div>
-    </Option>
-  );
-}
-
 function NameAutoFiller() {
-  const [nameBasics, setNameBasics] = useState([]);
+  const [nameBasics, setNameBasics] = useState({});
 
-  const search = name => {
+  function select(id) {
+    const nameBasic = nameBasics[id];
+    console.log("selected: " + JSON.stringify(nameBasic));
+  }
+
+  function search(name) {
     axios
       .get(`http://localhost:4000/search/name/${name}`)
       .then(({ data }) => {
-        setNameBasics(data);
+        setNameBasics(_.keyBy(data, "_id"));
       })
       .catch(function(error) {
         console.log(error);
         setNameBasics([]);
       });
-  };
+  }
 
   function renderOption(nameBasic) {
     return <Option key={nameBasic._id}>{nameBasic.primary_name}</Option>;
@@ -52,15 +31,14 @@ function NameAutoFiller() {
 
   return (
     <div className="NameAutoFiller">
-      <div className="global-search-wrapper" style={{ width: 300 }}>
         <AutoComplete
           className="global-search"
           size="large"
           style={{ width: "100%" }}
-          onSelect={onSelect}
+          onSelect={select}
           onSearch={search}
-          dataSource={nameBasics.map(renderOption)}
-          placeholder="input here"
+          dataSource={_.values(nameBasics).map(renderOption)}
+          placeholder="Enter Actor Name"
           optionLabelProp="text"
         >
           <Input
@@ -68,7 +46,6 @@ function NameAutoFiller() {
           />
         </AutoComplete>
       </div>
-    </div>
   );
 }
 
