@@ -58,7 +58,6 @@ searchRoutes.get(
     console.log("query: " + JSON.stringify(query));
 
     NameBasic.find(query).limit(25).then(names => {
-      console.log(names);
       res.json(names);
     });
   }
