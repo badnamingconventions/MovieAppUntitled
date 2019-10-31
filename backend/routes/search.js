@@ -31,7 +31,7 @@ searchRoutes.get(
     console.log("title: " + title);
     console.log("query: " + JSON.stringify(query));
 
-    TitleBasic.find(query).then(titles => {
+    TitleBasic.find(query).limit(25).then(titles => {
       res.json(titles);
     });
   }
@@ -57,7 +57,7 @@ searchRoutes.get(
     console.log("name: " + name);
     console.log("query: " + JSON.stringify(query));
 
-    NameBasic.find(query).then(names => {
+    NameBasic.find(query).limit(25).then(names => {
       console.log(names);
       res.json(names);
     });
