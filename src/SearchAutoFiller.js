@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Icon, Button, Input, AutoComplete } from "antd";
+import { Icon, Input, AutoComplete } from "antd";
 import axios from "axios";
 import _ from "lodash";
 
@@ -14,6 +14,8 @@ function NameAutoFiller() {
   }
 
   function search(name) {
+    if (name.length < 3) return;
+    
     axios
       .get(`http://localhost:4000/search/name/${name}`)
       .then(({ data }) => {
@@ -31,21 +33,21 @@ function NameAutoFiller() {
 
   return (
     <div className="NameAutoFiller">
-        <AutoComplete
-          className="global-search"
-          size="large"
-          style={{ width: "100%" }}
-          onSelect={select}
-          onSearch={search}
-          dataSource={_.values(nameBasics).map(renderOption)}
-          placeholder="Enter Actor Name"
-          optionLabelProp="text"
-        >
-          <Input
-            suffix={<Icon type="search" className="certain-category-icon" />}
-          />
-        </AutoComplete>
-      </div>
+      <AutoComplete
+        className="global-search"
+        size="large"
+        style={{ width: "100%" }}
+        onSelect={select}
+        onSearch={_.debounce(search, 250)}
+        dataSource={_.values(nameBasics).map(renderOption)}
+        placeholder="Enter Actor Name"
+        optionLabelProp="text"
+      >
+        <Input
+          suffix={<Icon type="search" className="certain-category-icon" />}
+        />
+      </AutoComplete>
+    </div>
   );
 }
 
