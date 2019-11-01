@@ -4,6 +4,9 @@ const { check, validationResult } = require("express-validator");
 const searchRoutes = express.Router();
 const NameBasic = require("../models/name_basic");
 const TitleBasic = require("../models/title_basic");
+require('dotenv').config()
+
+console.log("search env test: "+ process.env.TMDB_API_KEY);
 
 searchRoutes.route("/title").get(function(req, res) {
   TitleBasic.estimatedDocumentCount().then(count => {
