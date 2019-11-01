@@ -3,44 +3,75 @@ import { Icon, Input, AutoComplete } from "antd";
 import axios from "axios";
 import _ from "lodash";
 
-const { Option } = AutoComplete;
+const { Option, OptGroup } = AutoComplete;
+
+const find = (id, collection) => _.find(collection, ["_id", id]);
 
 function NameAutoFiller() {
-  const [nameBasics, setNameBasics] = useState({});
+  const [people, setPeople] = useState([]);
+  const [movies, setMovies] = useState([]);
 
   function select(id) {
-    const nameBasic = nameBasics[id];
-    console.log("selected: " + JSON.stringify(nameBasic));
+    const selectedItem = find(id, people) || find(id, movies);
+    console.log("selected: " + JSON.stringify(selectedItem));
   }
 
   function search(name) {
     if (name.length < 3) return;
-    
+
     axios
       .get(`http://localhost:4000/search/name/${name}`)
       .then(({ data }) => {
-        setNameBasics(_.keyBy(data, "_id"));
+        setPeople(data);
       })
       .catch(function(error) {
         console.log(error);
-        setNameBasics([]);
+        setPeople([]);
+      });
+
+    axios
+      .get(`http://localhost:4000/search/title/movie/${name}`)
+      .then(({ data }) => {
+        setMovies(data);
+      })
+      .catch(function(error) {
+        console.log(error);
+        setMovies([]);
       });
   }
 
-  function renderOption(nameBasic) {
-    return <Option key={nameBasic._id}>{nameBasic.primary_name}</Option>;
-  }
+  const peopleOptions = (
+    <OptGroup key={"people"} label={"People"}>
+      {people.map(person => (
+        <Option key={person._id}>
+          {person.primary_name}
+          <span className="search-item-year">{person.birthYear}</span>
+        </Option>
+      ))}
+    </OptGroup>
+  );
+
+  const movieOptions = (
+    <OptGroup key="movies" label={"Movies"}>
+      {movies.map(movie => (
+        <Option key={movie._id}>
+          {movie.primary_title}
+          <span className="search-item-year">{movie.start_year}</span>
+        </Option>
+      ))}
+    </OptGroup>
+  );
 
   return (
     <div className="NameAutoFiller">
       <AutoComplete
         className="global-search"
         size="large"
-        style={{ width: "100%" }}
+        style={{ width: "300px" }}
         onSelect={select}
         onSearch={_.debounce(search, 250)}
-        dataSource={_.values(nameBasics).map(renderOption)}
-        placeholder="Enter Actor Name"
+        dataSource={[peopleOptions, movieOptions]}
+        placeholder="Enter Actor Name or Title"
         optionLabelProp="text"
       >
         <Input

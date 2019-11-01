@@ -20,3 +20,9 @@
 .App-link {
   color: #09d3ac;
 }
+
+.search-item-year {
+  position: absolute;
+  color: #999;
+  right: 16px;
+}
