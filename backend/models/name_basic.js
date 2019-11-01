@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const TitleBasic = new Schema({
+const NameBasic = new Schema({
     _id: {
         type: String
     },
@@ -20,4 +20,4 @@ const TitleBasic = new Schema({
         type: [String]
     }
 });
-module.exports = mongoose.model('NameBasics', TitleBasic);
+module.exports = mongoose.model('NameBasics', NameBasic);
