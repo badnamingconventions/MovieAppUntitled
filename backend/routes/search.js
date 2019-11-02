@@ -26,10 +26,21 @@ const findTitle = title_type => (req, res) => {
   console.log("title: " + title);
   console.log("query: " + JSON.stringify(query));
 
-  TitleBasic.find(query)
+  TitleBasic.aggregate()
+    .match(query)
+    .lookup({
+      from: "wikidatabasics",
+      localField: "_id",
+      foreignField: "imdb_id",
+      as: "wikidata"
+    })
     .limit(5)
     .then(titles => {
       res.json(titles);
+    })
+    .catch(errors => {
+      console.log(errors);
+      res.status(422).json({ errors });
     });
 };
 
@@ -66,10 +77,21 @@ searchRoutes.get(
     console.log("name: " + name);
     console.log("query: " + JSON.stringify(query));
 
-    NameBasic.find(query)
+    NameBasic.aggregate()
+      .match(query)
+      .lookup({
+        from: "wikidatabasics",
+        localField: "_id",
+        foreignField: "imdb_id",
+        as: "wikidata"
+      })
       .limit(5)
       .then(names => {
         res.json(names);
+      })
+      .catch(errors => {
+        console.log(errors);
+        res.status(422).json({ errors });
       });
   }
 );
