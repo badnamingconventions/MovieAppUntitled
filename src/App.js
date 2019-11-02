@@ -1,7 +1,7 @@
 import React from "react";
-import "./App.css";
 import SearchAutoFiller from "./SearchAutoFiller";
 import 'antd/dist/antd.css';
+import "./App.css";
 
 function App() {
   return (
