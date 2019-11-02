@@ -1,6 +1,15 @@
 class Model
+  @data_source = :imdb
+  def self.data_source
+    @data_source
+  end
+
   def self.names
     [self.file_name, @table_name]
+  end
+
+  def self.table_name
+    @table_name
   end
 
   def self.file_name
@@ -95,6 +104,24 @@ class NameBasic < Model
         deathYear: deathYear,
         primaryProfession: primaryProfession.split(","),
         knownForTitles: knownForTitles.split(","),
+    }
+  end
+end
+
+class WikidataBasic < Model
+  @table_name = "wikidatabasics"
+  @data_source = :wikidata
+  @custom_indexes = [{imdb_id: 1}]
+
+  def self.strip_from_url(url)
+    url.split("/").last
+  end
+
+  def self.to_hash(wikidata_id, imdb_id, image=nil)
+    {
+      imdb_id: imdb_id,
+      image: image && self.strip_from_url(image),
+      wikidata_id: self.strip_from_url(wikidata_id),
     }
   end
 end
