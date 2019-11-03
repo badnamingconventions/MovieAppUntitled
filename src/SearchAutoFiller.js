@@ -3,19 +3,23 @@ import { Icon, Input, AutoComplete } from "antd";
 import axios from "axios";
 import _ from "lodash";
 import Entity from "./components/Entity";
+import { useDispatch } from "react-redux";
+import { SET_ENTITIES } from "./reducers";
 
 const { Option, OptGroup } = AutoComplete;
 
 const find = (id, collection) => _.find(collection, ["_id", id]);
 
-function NameAutoFiller({setEntity}) {
+function NameAutoFiller({ index }) {
+  const dispatch = useDispatch();
+
   const [people, setPeople] = useState([]);
   const [movies, setMovies] = useState([]);
 
   function selectEntity(id) {
     const selectedItem = find(id, people) || find(id, movies);
     console.log("selected: " + JSON.stringify(selectedItem));
-    setEntity(selectedItem);
+    dispatch({ type: SET_ENTITIES, data: selectedItem, index });
   }
 
   function search(name) {

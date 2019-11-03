@@ -1,36 +1,26 @@
 import React, { useState } from "react";
 import SearchAutoFiller from "../SearchAutoFiller";
 import Entity from "./Entity";
-import { Button, Layout } from "antd";
+import { Button } from "antd";
+import { useSelector, useDispatch } from "react-redux";
+import { SET_ENTITIES } from "../reducers";
 
-const willSmith = {
-  _id: "nm0000226",
-  primary_name: "Will Smith",
-  birthYear: "1968",
-  deathYear: "\\N",
-  primaryProfession: ["music_department", "actor", "producer"],
-  knownForTitles: ["tt0120891", "tt0119654", "tt0098800", "tt0480249"],
-  wikidata: [
-    {
-      _id: "5dbd02f699cacd339ff80447",
-      imdb_id: "nm0000226",
-      image: "Will%20Smith%20%2832335923807%29.jpg",
-      wikidata_id: "Q40096"
-    }
-  ]
-};
+function EntitySelector({ index = 0 }) {
+  const dispatch = useDispatch();
+  const entity = useSelector(({ entities }) => entities[index]);
 
-function EntitySelector() {
-  const [entity, setEntity] = useState(willSmith);
+  function clearEntity() {
+    dispatch({ type: SET_ENTITIES, data: null, index });
+  }
 
   return (
     <div className="EntitySelector">
       {entity ? (
-        <Button size={"large"} onClick={() => setEntity(null)}>
+        <Button size={"large"} onClick={clearEntity}>
           <Entity entity={entity} />
         </Button>
       ) : (
-        <SearchAutoFiller setEntity={setEntity} />
+        <SearchAutoFiller index={index} />
       )}
     </div>
   );
