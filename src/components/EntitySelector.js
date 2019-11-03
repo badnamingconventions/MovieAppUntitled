@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import SearchAutoFiller from "../SearchAutoFiller";
+import SearchAutoFiller from "./SearchAutoFiller";
 import Entity from "./Entity";
 import { Button } from "antd";
 import { useSelector, useDispatch } from "react-redux";

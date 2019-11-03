@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { Icon, Input, AutoComplete } from "antd";
 import axios from "axios";
 import _ from "lodash";
-import Entity from "./components/Entity";
+import Entity from "./Entity";
 import { useDispatch } from "react-redux";
-import { SET_ENTITIES } from "./reducers";
+import { SET_ENTITIES } from "../reducers";
 
 const { Option, OptGroup } = AutoComplete;
 
