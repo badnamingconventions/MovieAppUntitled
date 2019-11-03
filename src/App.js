@@ -22,7 +22,7 @@ function App() {
           </Row>
         </Header>
         <Content>
-
+            
         </Content>
       </Layout>
     </div>

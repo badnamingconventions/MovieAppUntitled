@@ -7,6 +7,7 @@ const PORT = 4000;
 const TitleBasicRouter = require('./routes/title_basic');
 const NameBasicRouter = require('./routes/name_basic');
 const SearchRouter = require('./routes/search');
+const RelationRouter = require('./routes/relations');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -20,6 +21,8 @@ connection.once('open', function() {
 app.use('/title', TitleBasicRouter);
 app.use('/name', NameBasicRouter);
 app.use('/search', SearchRouter);
+app.use('/relation', RelationRouter);
+
 app.listen(PORT, function() {
     console.log("Server is running on Port: " + PORT);
 });
