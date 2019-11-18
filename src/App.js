@@ -1,5 +1,6 @@
 import React from "react";
 import EntitySelector from "./components/EntitySelector";
+import Chart from "./components/Chart";
 import "antd/dist/antd.css";
 import "./App.css";
 import { Row, Col, Layout } from "antd";
@@ -22,7 +23,7 @@ function App() {
           </Row>
         </Header>
         <Content>
-            
+            <Chart />
         </Content>
       </Layout>
     </div>
